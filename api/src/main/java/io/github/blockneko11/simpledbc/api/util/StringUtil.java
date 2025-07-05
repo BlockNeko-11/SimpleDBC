@@ -6,4 +6,8 @@ public final class StringUtil {
     public static boolean isEmpty(@Nullable String str) {
         return str == null || str.isEmpty();
     }
+
+    private StringUtil() {
+        throw new UnsupportedOperationException();
+    }
 }
