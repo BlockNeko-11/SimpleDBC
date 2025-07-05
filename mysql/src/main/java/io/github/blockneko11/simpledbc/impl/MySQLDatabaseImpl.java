@@ -10,7 +10,7 @@ public class MySQLDatabaseImpl extends DatabaseImpl {
     private final String password;
     private final String databaseName;
 
-    protected MySQLDatabaseImpl(@NotNull String url,
+    public MySQLDatabaseImpl(@NotNull String url,
                                 @NotNull String username,
                                 @NotNull String password,
                                 @NotNull String databaseName) {

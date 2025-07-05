@@ -1,0 +1,6 @@
+name: SimpleDBC
+version: "${version}"
+main: io.github.blockneko11.simpledbc.bukkit.SimpleDBCPlugin
+author: BlockNeko-11
+website: https://github.com/BlockNeko-11/SimpleDBC
+api-version: 1.13

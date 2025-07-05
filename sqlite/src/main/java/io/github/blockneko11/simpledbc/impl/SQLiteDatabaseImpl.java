@@ -1,6 +1,5 @@
 package io.github.blockneko11.simpledbc.impl;
 
-import io.github.blockneko11.simpledbc.api.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -8,29 +7,20 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class SQLiteDatabaseImpl extends DatabaseImpl {
-    private final String username;
-    private final String password;
-
-    protected SQLiteDatabaseImpl(@NotNull String url) {
-        this(url, null, null);
-    }
-
-    protected SQLiteDatabaseImpl(@NotNull String url, @Nullable String username, @Nullable String password) {
-        super(url);
-        this.username = username;
-        this.password = password;
+    public SQLiteDatabaseImpl(@NotNull String path) {
+        super(path);
     }
 
     @Nullable
     @Override
     public String getUsername() {
-        return this.username;
+        return null;
     }
 
     @Nullable
     @Override
     public String getPassword() {
-        return this.password;
+        return null;
     }
 
     @Override
@@ -46,11 +36,7 @@ public class SQLiteDatabaseImpl extends DatabaseImpl {
         }
 
         if (!isConnected()) {
-            if (!StringUtil.isEmpty(this.username) && !StringUtil.isEmpty(this.password)) {
-                setConnection(DriverManager.getConnection(getUrl(), getUsername(), getPassword()));
-            } else {
-                setConnection(DriverManager.getConnection(getUrl()));
-            }
+            setConnection(DriverManager.getConnection(getUrl()));
         }
     }
 }

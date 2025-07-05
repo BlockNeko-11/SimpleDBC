@@ -31,18 +31,18 @@ public interface Database {
     /**
      * 获取数据库用户名。
      * <p>
-     * 使用 SQLite 的实现时，此方法可能返回 {@code null}。
+     * 使用 SQLite 的实现时，此方法一定返回 {@code null}。
      * @return 数据库用户名
-     * @since 1.0.0
+     * @since 1.0.2
      */
     String getUsername();
 
     /**
      * 获取数据库密码。
      * <p>
-     * 使用 SQLite 的实现时，此方法可能返回 {@code null}。
+     * 使用 SQLite 的实现时，此方法一定返回 {@code null}。
      * @return 数据库密码
-     * @since 1.0.0
+     * @since 1.0.2
      */
     String getPassword();
 
