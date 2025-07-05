@@ -49,7 +49,10 @@ jobs:
         with:
           name: Artifacts
           path: |
-            build/libs/
+            api/build/libs/
+            bukkit/build/libs/
+            mysql/build/libs/
+            sqlite/build/libs/
 
       - name: read gradle.properties
         id: prop_info
@@ -64,6 +67,8 @@ jobs:
         with:
           name: "${{ steps.prop_info.outputs.artifact_version }}"
           tag_name: "${{ steps.prop_info.outputs.artifact_version }}"
+          files: |
+            bukkit/build/libs/*.jar
           target_commitish: ${{ github.event.ref }}
           generate_release_notes: true
           token: ${{ secrets.RELEASE_TOKEN }}
