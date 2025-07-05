@@ -1,0 +1,4 @@
+dependencies {
+    api project(":api")
+    compileOnly "org.xerial:sqlite-jdbc:3.50.1.0"
+}

@@ -1,0 +1,11 @@
+def subprojectDirs = [
+        "api",
+        "mysql",
+        "sqlite"
+]
+
+subprojectDirs.each {
+    include it
+}
+
+rootProject.name = "SimpleDBC"
