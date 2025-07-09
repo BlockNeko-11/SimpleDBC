@@ -6,9 +6,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * 数据库接口。
@@ -98,14 +97,14 @@ public interface Database {
      * @throws SQLException 如果 SQL 语句执行失败
      * @since 1.0.0
      */
-    int execute(@NotNull String sql) throws SQLException;
+    int update(@NotNull String sql) throws SQLException;
 
     /**
-     * @see #execute(SQLStatement)
+     * @see #update(SQLStatement)
      * @since 1.0.0
      */
-    default int execute(@NotNull String sql, Object... args) throws SQLException {
-        return execute(new SQLStatement(sql, args));
+    default int update(@NotNull String sql, Object... args) throws SQLException {
+        return update(SQLStatement.of(sql, args));
     }
 
     /**
@@ -115,38 +114,31 @@ public interface Database {
      * @throws SQLException 如果 SQL 语句执行失败
      * @since 1.0.0
      */
-    int execute(@NotNull SQLStatement sql) throws SQLException;
+    int update(@NotNull SQLStatement sql) throws SQLException;
+
+    // query
 
     /**
-     * @see #executeBatch(Iterable)
-     * @since 1.0.0
+     * 执行 SQL 查询。
+     * @param sql SQL 语句
+     * @return 查询结果
+     * @throws SQLException 如果 SQL 语句执行失败
+     * @since 1.1.0
      */
-    default List<Integer> executeBatchString(@NotNull String... batch) throws SQLException {
-        return executeBatchString(Arrays.asList(batch));
+    ResultSet query(@NotNull String sql) throws SQLException;
+
+    /**
+     * @see #query(SQLStatement)
+     */
+    default ResultSet query(@NotNull String sql, Object... args) throws SQLException {
+        return query(SQLStatement.of(sql, args));
     }
 
     /**
-     * 批量执行 SQL 语句。
-     * @param batch 批量 SQL 语句
-     * @return 影响的行数
+     * 执行 SQL 查询。
+     * @param sql SQL 语句。一个 {@link SQLStatement} 实例
+     * @return 查询结果
      * @throws SQLException 如果 SQL 语句执行失败
-     * @since 1.0.0
      */
-    List<Integer> executeBatchString(@NotNull Iterable<String> batch) throws SQLException;
-
-    /**
-     * @see #executeBatchString(Iterable)
-     */
-    default List<Integer> executeBatch(@NotNull SQLStatement... batch) throws SQLException {
-        return executeBatch(Arrays.asList(batch));
-    }
-
-    /**
-     * 批量执行 SQL 语句
-     * @param batch 批量 SQL 语句
-     * @return 影响的行数
-     * @throws SQLException 如果 SQL 语句执行失败
-     * @since 1.0.0
-     */
-    List<Integer> executeBatch(@NotNull Iterable<SQLStatement> batch) throws SQLException;
+    ResultSet query(@NotNull SQLStatement sql) throws SQLException;
 }

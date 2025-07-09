@@ -7,10 +7,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class DatabaseImpl implements Database {
     protected boolean initialized = false;
@@ -45,23 +43,19 @@ public abstract class DatabaseImpl implements Database {
     }
 
     @Override
-    public int execute(@NotNull String sql) throws SQLException {
-        if (!isConnected()) {
-            throw new SQLException("Not connected to database");
-        }
+    public int update(@NotNull String sql) throws SQLException {
+        this.checkConnection();
 
-        try (Statement statement = getConnection().createStatement()) {
-            return statement.executeUpdate(sql);
+        try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
+            return statement.executeUpdate();
         }
     }
 
     @Override
-    public int execute(@NotNull SQLStatement sql) throws SQLException {
-        if (!isConnected()) {
-            throw new SQLException("Not connected to database");
-        }
+    public int update(@NotNull SQLStatement sql) throws SQLException {
+        this.checkConnection();
 
-        try (PreparedStatement statement = getConnection().prepareStatement(sql.getSql())) {
+        try (PreparedStatement statement = getConnection().prepareStatement(sql.getSQL())) {
             Object[] args = sql.getArgs();
 
             for (int i = 0; i < args.length; i++) {
@@ -73,34 +67,32 @@ public abstract class DatabaseImpl implements Database {
     }
 
     @Override
-    public List<Integer> executeBatchString(@NotNull Iterable<String> batch) throws SQLException {
-        List<Integer> result = new ArrayList<>();
+    public ResultSet query(@NotNull String sql) throws SQLException {
+        this.checkConnection();
 
-        for (@NotNull String sql : batch) {
-            try (Statement statement = getConnection().createStatement()) {
-                result.add(statement.executeUpdate(sql));
-            }
+        try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
+            return statement.executeQuery();
         }
-
-        return result;
     }
 
     @Override
-    public List<Integer> executeBatch(@NotNull Iterable<SQLStatement> batch) throws SQLException {
-        List<Integer> result = new ArrayList<>();
+    public ResultSet query(@NotNull SQLStatement sql) throws SQLException {
+        this.checkConnection();
 
-        for (@NotNull SQLStatement sql : batch) {
+        try (PreparedStatement statement = getConnection().prepareStatement(sql.getSQL())) {
             Object[] args = sql.getArgs();
 
-            try (PreparedStatement statement = getConnection().prepareStatement(sql.getSql())) {
-                for (int i = 0; i < args.length; i++) {
-                    statement.setObject(i + 1, args[i]);
-                }
-
-                result.add(statement.executeUpdate());
+            for (int i = 0; i < args.length; i++) {
+                statement.setObject(i + 1, args[i]);
             }
-        }
 
-        return result;
+            return statement.executeQuery();
+        }
+    }
+
+    private void checkConnection() throws SQLException {
+        if (!isConnected()) {
+            throw new SQLException("Not connected to database");
+        }
     }
 }
