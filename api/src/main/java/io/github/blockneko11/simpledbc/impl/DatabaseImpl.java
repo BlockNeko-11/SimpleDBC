@@ -99,7 +99,7 @@ public abstract class DatabaseImpl implements Database {
                 String.join(", ", table.getColumns().stream().map(column -> column.getName() +
                         " " +
                         column.getType()).toArray(String[]::new)) +
-                ")");
+                ");");
     }
 
     private void checkConnection() throws SQLException {
