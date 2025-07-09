@@ -2,6 +2,7 @@ package io.github.blockneko11.simpledbc.impl;
 
 import io.github.blockneko11.simpledbc.api.Database;
 import io.github.blockneko11.simpledbc.api.statement.SQLStatement;
+import io.github.blockneko11.simpledbc.api.table.Table;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -88,6 +89,17 @@ public abstract class DatabaseImpl implements Database {
 
             return statement.executeQuery();
         }
+    }
+
+    @Override
+    public int createTable(@NotNull Table table) throws SQLException {
+        return this.update("CREATE TABLE IF NOT EXISTS " +
+                table.getName() +
+                " (" +
+                String.join(", ", table.getColumns().stream().map(column -> column.getName() +
+                        " " +
+                        column.getType()).toArray(String[]::new)) +
+                ")");
     }
 
     private void checkConnection() throws SQLException {

@@ -1,8 +1,7 @@
 def subprojectDirs = [
         "api",
         "mysql",
-        "sqlite",
-        "bukkit"
+        "sqlite"
 ]
 
 subprojectDirs.each {
