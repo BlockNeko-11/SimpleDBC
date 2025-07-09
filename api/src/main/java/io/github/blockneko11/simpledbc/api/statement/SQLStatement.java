@@ -1,33 +1,27 @@
 package io.github.blockneko11.simpledbc.api.statement;
 
-import lombok.Getter;
+import io.github.blockneko11.simpledbc.impl.statement.SQLStatementImpl;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * 包装后的 SQL 语句。
  * @author BlockNeko-11
- * @since 1.0.0
+ * @since 1.1.0
  */
-@Getter
-public final class SQLStatement {
+public interface SQLStatement {
     /**
-     * SQL 语句。
+     * 获取 SQL 语句。
      */
     @NotNull
-    private final String sql;
+    String getSQL();
 
     /**
-     * SQL 参数。
+     * 获取 SQL 参数。
      */
-    private final Object[] args;
+    @NotNull
+    Object[] getArgs();
 
-    /**
-     * 构造函数。
-     * @param sql SQL 语句
-     * @param args SQL 参数
-     */
-    public SQLStatement(@NotNull String sql, Object... args) {
-        this.sql = sql;
-        this.args = args;
+    static SQLStatement of(@NotNull String sql, @NotNull Object... args) {
+        return new SQLStatementImpl(sql, args);
     }
 }

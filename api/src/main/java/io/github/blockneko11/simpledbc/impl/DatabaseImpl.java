@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public abstract class DatabaseImpl implements Database {
@@ -42,10 +43,8 @@ public abstract class DatabaseImpl implements Database {
     }
 
     @Override
-    public int execute(@NotNull String sql) throws SQLException {
-        if (!isConnected()) {
-            throw new SQLException("Not connected to database");
-        }
+    public int update(@NotNull String sql) throws SQLException {
+        this.checkConnection();
 
         try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
             return statement.executeUpdate();
@@ -53,12 +52,10 @@ public abstract class DatabaseImpl implements Database {
     }
 
     @Override
-    public int execute(@NotNull SQLStatement sql) throws SQLException {
-        if (!isConnected()) {
-            throw new SQLException("Not connected to database");
-        }
+    public int update(@NotNull SQLStatement sql) throws SQLException {
+        this.checkConnection();
 
-        try (PreparedStatement statement = getConnection().prepareStatement(sql.getSql())) {
+        try (PreparedStatement statement = getConnection().prepareStatement(sql.getSQL())) {
             Object[] args = sql.getArgs();
 
             for (int i = 0; i < args.length; i++) {
@@ -66,6 +63,36 @@ public abstract class DatabaseImpl implements Database {
             }
 
             return statement.executeUpdate();
+        }
+    }
+
+    @Override
+    public ResultSet query(@NotNull String sql) throws SQLException {
+        this.checkConnection();
+
+        try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
+            return statement.executeQuery();
+        }
+    }
+
+    @Override
+    public ResultSet query(@NotNull SQLStatement sql) throws SQLException {
+        this.checkConnection();
+
+        try (PreparedStatement statement = getConnection().prepareStatement(sql.getSQL())) {
+            Object[] args = sql.getArgs();
+
+            for (int i = 0; i < args.length; i++) {
+                statement.setObject(i + 1, args[i]);
+            }
+
+            return statement.executeQuery();
+        }
+    }
+
+    private void checkConnection() throws SQLException {
+        if (!isConnected()) {
+            throw new SQLException("Not connected to database");
         }
     }
 }

@@ -8,8 +8,6 @@ import org.jetbrains.annotations.Nullable;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * 数据库接口。
@@ -99,14 +97,14 @@ public interface Database {
      * @throws SQLException 如果 SQL 语句执行失败
      * @since 1.0.0
      */
-    int execute(@NotNull String sql) throws SQLException;
+    int update(@NotNull String sql) throws SQLException;
 
     /**
-     * @see #execute(SQLStatement)
+     * @see #update(SQLStatement)
      * @since 1.0.0
      */
-    default int execute(@NotNull String sql, Object... args) throws SQLException {
-        return execute(new SQLStatement(sql, args));
+    default int update(@NotNull String sql, Object... args) throws SQLException {
+        return update(SQLStatement.of(sql, args));
     }
 
     /**
@@ -116,5 +114,14 @@ public interface Database {
      * @throws SQLException 如果 SQL 语句执行失败
      * @since 1.0.0
      */
-    int execute(@NotNull SQLStatement sql) throws SQLException;
+    int update(@NotNull SQLStatement sql) throws SQLException;
+
+
+    ResultSet query(@NotNull String sql) throws SQLException;
+
+    default ResultSet query(@NotNull String sql, Object... args) throws SQLException {
+        return query(SQLStatement.of(sql, args));
+    }
+
+    ResultSet query(@NotNull SQLStatement sql) throws SQLException;
 }
