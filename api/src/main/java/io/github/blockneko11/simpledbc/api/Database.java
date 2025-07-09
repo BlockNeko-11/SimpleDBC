@@ -116,12 +116,29 @@ public interface Database {
      */
     int update(@NotNull SQLStatement sql) throws SQLException;
 
+    // query
 
+    /**
+     * 执行 SQL 查询。
+     * @param sql SQL 语句
+     * @return 查询结果
+     * @throws SQLException 如果 SQL 语句执行失败
+     * @since 1.1.0
+     */
     ResultSet query(@NotNull String sql) throws SQLException;
 
+    /**
+     * @see #query(SQLStatement)
+     */
     default ResultSet query(@NotNull String sql, Object... args) throws SQLException {
         return query(SQLStatement.of(sql, args));
     }
 
+    /**
+     * 执行 SQL 查询。
+     * @param sql SQL 语句。一个 {@link SQLStatement} 实例
+     * @return 查询结果
+     * @throws SQLException 如果 SQL 语句执行失败
+     */
     ResultSet query(@NotNull SQLStatement sql) throws SQLException;
 }
