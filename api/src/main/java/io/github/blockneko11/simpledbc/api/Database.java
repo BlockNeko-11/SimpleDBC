@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
@@ -116,37 +117,4 @@ public interface Database {
      * @since 1.0.0
      */
     int execute(@NotNull SQLStatement sql) throws SQLException;
-
-    /**
-     * @see #executeBatch(Iterable)
-     * @since 1.0.0
-     */
-    default List<Integer> executeBatchString(@NotNull String... batch) throws SQLException {
-        return executeBatchString(Arrays.asList(batch));
-    }
-
-    /**
-     * 批量执行 SQL 语句。
-     * @param batch 批量 SQL 语句
-     * @return 影响的行数
-     * @throws SQLException 如果 SQL 语句执行失败
-     * @since 1.0.0
-     */
-    List<Integer> executeBatchString(@NotNull Iterable<String> batch) throws SQLException;
-
-    /**
-     * @see #executeBatchString(Iterable)
-     */
-    default List<Integer> executeBatch(@NotNull SQLStatement... batch) throws SQLException {
-        return executeBatch(Arrays.asList(batch));
-    }
-
-    /**
-     * 批量执行 SQL 语句
-     * @param batch 批量 SQL 语句
-     * @return 影响的行数
-     * @throws SQLException 如果 SQL 语句执行失败
-     * @since 1.0.0
-     */
-    List<Integer> executeBatch(@NotNull Iterable<SQLStatement> batch) throws SQLException;
 }

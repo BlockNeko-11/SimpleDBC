@@ -8,9 +8,6 @@ import org.jetbrains.annotations.Nullable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class DatabaseImpl implements Database {
     protected boolean initialized = false;
@@ -70,37 +67,5 @@ public abstract class DatabaseImpl implements Database {
 
             return statement.executeUpdate();
         }
-    }
-
-    @Override
-    public List<Integer> executeBatchString(@NotNull Iterable<String> batch) throws SQLException {
-        List<Integer> result = new ArrayList<>();
-
-        for (@NotNull String sql : batch) {
-            try (Statement statement = getConnection().createStatement()) {
-                result.add(statement.executeUpdate(sql));
-            }
-        }
-
-        return result;
-    }
-
-    @Override
-    public List<Integer> executeBatch(@NotNull Iterable<SQLStatement> batch) throws SQLException {
-        List<Integer> result = new ArrayList<>();
-
-        for (@NotNull SQLStatement sql : batch) {
-            Object[] args = sql.getArgs();
-
-            try (PreparedStatement statement = getConnection().prepareStatement(sql.getSql())) {
-                for (int i = 0; i < args.length; i++) {
-                    statement.setObject(i + 1, args[i]);
-                }
-
-                result.add(statement.executeUpdate());
-            }
-        }
-
-        return result;
     }
 }
