@@ -1,6 +1,7 @@
 package io.github.blockneko11.simpledbc.api;
 
 import io.github.blockneko11.simpledbc.api.statement.SQLStatement;
+import io.github.blockneko11.simpledbc.api.table.Table;
 import io.github.blockneko11.simpledbc.impl.DatabaseImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -88,6 +89,7 @@ public interface Database {
     @Nullable
     Connection getConnection();
 
+    // generic
     // execution
 
     /**
@@ -141,4 +143,8 @@ public interface Database {
      * @throws SQLException 如果 SQL 语句执行失败
      */
     ResultSet query(@NotNull SQLStatement sql) throws SQLException;
+
+    // table create
+
+    int createTable(@NotNull Table table) throws SQLException;
 }
