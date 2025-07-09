@@ -50,8 +50,8 @@ public abstract class DatabaseImpl implements Database {
             throw new SQLException("Not connected to database");
         }
 
-        try (Statement statement = getConnection().createStatement()) {
-            return statement.executeUpdate(sql);
+        try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
+            return statement.executeUpdate();
         }
     }
 
