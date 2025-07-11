@@ -71,24 +71,22 @@ public abstract class DatabaseImpl implements Database {
     public ResultSet query(@NotNull String sql) throws SQLException {
         this.checkConnection();
 
-        try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
-            return statement.executeQuery();
-        }
+        PreparedStatement statement = getConnection().prepareStatement(sql);
+        return statement.executeQuery();
     }
 
     @Override
     public ResultSet query(@NotNull SQLStatement sql) throws SQLException {
         this.checkConnection();
 
-        try (PreparedStatement statement = getConnection().prepareStatement(sql.getSQL())) {
-            Object[] args = sql.getArgs();
+        PreparedStatement statement = getConnection().prepareStatement(sql.getSQL());
+        Object[] args = sql.getArgs();
 
-            for (int i = 0; i < args.length; i++) {
-                statement.setObject(i + 1, args[i]);
-            }
-
-            return statement.executeQuery();
+        for (int i = 0; i < args.length; i++) {
+            statement.setObject(i + 1, args[i]);
         }
+
+        return statement.executeQuery();
     }
 
     @Override
