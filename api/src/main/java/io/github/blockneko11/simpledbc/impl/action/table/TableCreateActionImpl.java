@@ -39,7 +39,8 @@ public class TableCreateActionImpl extends AbstractAction implements TableCreate
     }
 
     private String buildSQL() {
-        StringBuilder sqlBuilder = new StringBuilder("CREATE TABLE IF NOT EXISTS ")
+        StringBuilder sqlBuilder = new StringBuilder(256);
+        sqlBuilder.append("CREATE TABLE IF NOT EXISTS ")
                 .append(this.table)
                 .append(" (");
 

@@ -36,10 +36,11 @@ public abstract class AbstractInsertAction extends AbstractAction implements Ins
 //    }
 //
     protected static String buildSQL(boolean ignore,
-                                   @NotNull String table,
-                                   @Nullable Collection<String> columns,
-                                   @NotNull Collection<Object> values) {
-        StringBuilder sqlBuilder = new StringBuilder("INSERT ");
+                                     @NotNull String table,
+                                     @Nullable Collection<String> columns,
+                                     @NotNull Collection<Object> values) {
+        StringBuilder sqlBuilder = new StringBuilder(256);
+        sqlBuilder.append("INSERT ");
 
         if (ignore) {
             sqlBuilder.append("IGNORE ");
