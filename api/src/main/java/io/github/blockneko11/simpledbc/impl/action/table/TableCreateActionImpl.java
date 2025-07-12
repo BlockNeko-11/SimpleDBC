@@ -54,7 +54,7 @@ public class TableCreateActionImpl extends AbstractAction implements TableCreate
             Iterator<Attribute> attributeIterator = column.getAttributes().iterator();
             while (attributeIterator.hasNext()) {
                 Attribute attribute = attributeIterator.next();
-                sqlBuilder.append(attribute.name());
+                sqlBuilder.append(attribute);
 
                 if (attributeIterator.hasNext()) {
                     sqlBuilder.append(" ");

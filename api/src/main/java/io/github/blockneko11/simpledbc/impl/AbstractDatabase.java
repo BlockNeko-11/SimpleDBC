@@ -1,7 +1,6 @@
 package io.github.blockneko11.simpledbc.impl;
 
 import io.github.blockneko11.simpledbc.api.Database;
-import io.github.blockneko11.simpledbc.api.action.TableAction;
 import io.github.blockneko11.simpledbc.api.action.insert.InsertAction;
 import io.github.blockneko11.simpledbc.api.action.table.TableCreateAction;
 import io.github.blockneko11.simpledbc.impl.action.insert.ColumnInsertAction;
