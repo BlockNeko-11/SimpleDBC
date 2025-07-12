@@ -6,34 +6,31 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class MySQLDatabaseImpl extends DatabaseImpl {
+public class MariaDBDatabaseImpl extends DatabaseImpl {
     private final String username;
     private final String password;
     private final String databaseName;
 
-    public MySQLDatabaseImpl(@NotNull String url,
-                             @NotNull String username,
-                             @NotNull String password,
-                             @NotNull String databaseName) {
+    public MariaDBDatabaseImpl(@NotNull String url,
+                               @NotNull String username,
+                               @NotNull String password,
+                               @NotNull String databaseName) {
         super(url);
         this.username = username;
         this.password = password;
         this.databaseName = databaseName;
     }
 
-    @NotNull
     @Override
     public String getUsername() {
         return this.username;
     }
 
-    @NotNull
     @Override
     public String getPassword() {
         return this.password;
     }
 
-    @NotNull
     @Override
     public String getDatabaseName() {
         return this.databaseName;
@@ -42,12 +39,12 @@ public class MySQLDatabaseImpl extends DatabaseImpl {
     @Override
     public void connect() throws ClassNotFoundException, SQLException {
         if (!initialized) {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("org.mariadb.jdbc.Driver");
             initialized = true;
         }
 
         if (!isConnected()) {
-            String uri = StringUtil.format("jdbc:mysql://{0}/{1}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC",
+            String uri = StringUtil.format("jdbc:mariadb://{0}/{1}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC",
                     url,
                     this.databaseName
             );

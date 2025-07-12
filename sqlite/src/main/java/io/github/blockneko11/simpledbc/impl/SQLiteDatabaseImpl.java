@@ -36,7 +36,7 @@ public class SQLiteDatabaseImpl extends DatabaseImpl {
         }
 
         if (!isConnected()) {
-            setConnection(DriverManager.getConnection(getUrl()));
+            setConnection(DriverManager.getConnection(url));
         }
     }
 }

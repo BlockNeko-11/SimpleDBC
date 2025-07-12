@@ -1,7 +1,6 @@
 package io.github.blockneko11.simpledbc.impl;
 
 import io.github.blockneko11.simpledbc.api.Database;
-import io.github.blockneko11.simpledbc.api.statement.SQLStatement;
 import io.github.blockneko11.simpledbc.api.table.Table;
 import io.github.blockneko11.simpledbc.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
@@ -15,7 +14,7 @@ import java.util.Map;
 
 public abstract class DatabaseImpl implements Database {
     protected boolean initialized = false;
-    private final String url;
+    protected final String url;
     private Connection connection = null;
 
     protected DatabaseImpl(@NotNull String url) {
