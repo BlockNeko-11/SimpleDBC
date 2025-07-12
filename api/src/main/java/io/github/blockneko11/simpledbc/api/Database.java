@@ -1,5 +1,6 @@
 package io.github.blockneko11.simpledbc.api;
 
+import io.github.blockneko11.simpledbc.api.action.insert.InsertAction;
 import io.github.blockneko11.simpledbc.api.table.Table;
 import io.github.blockneko11.simpledbc.impl.AbstractDatabase;
 import org.jetbrains.annotations.NotNull;
@@ -112,7 +113,7 @@ public interface Database {
 
     // insert
 
-    int insertInto(@NotNull String table, @NotNull Object... values) throws SQLException;
+    InsertAction valueInsert(@NotNull String table) throws SQLException;
 
-    int insertInto(@NotNull String table, @NotNull Map<String, Object> values) throws SQLException;
+    InsertAction columnInsert(@NotNull String table) throws SQLException;
 }
