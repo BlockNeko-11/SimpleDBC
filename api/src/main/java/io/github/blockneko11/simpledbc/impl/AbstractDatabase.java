@@ -1,8 +1,8 @@
 package io.github.blockneko11.simpledbc.impl;
 
 import io.github.blockneko11.simpledbc.api.Database;
-import io.github.blockneko11.simpledbc.api.statement.SQLStatement;
 import io.github.blockneko11.simpledbc.api.table.Table;
+import io.github.blockneko11.simpledbc.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -10,13 +10,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
 
-public abstract class DatabaseImpl implements Database {
-    protected boolean initialized = false;
+public abstract class AbstractDatabase implements Database {
+    private boolean initialized = false;
     private final String url;
     private Connection connection = null;
 
-    protected DatabaseImpl(@NotNull String url) {
+    protected AbstractDatabase(@NotNull String url) {
         this.url = url;
     }
 
@@ -43,6 +44,14 @@ public abstract class DatabaseImpl implements Database {
         }
     }
 
+    protected boolean isInitialized() {
+        return this.initialized;
+    }
+
+    protected void setInitialized(boolean initialized) {
+        this.initialized = initialized;
+    }
+
     @Override
     public int update(@NotNull String sql) throws SQLException {
         this.checkConnection();
@@ -53,12 +62,10 @@ public abstract class DatabaseImpl implements Database {
     }
 
     @Override
-    public int update(@NotNull SQLStatement sql) throws SQLException {
+    public int update(@NotNull String sql, @NotNull Object... args) throws SQLException {
         this.checkConnection();
 
-        try (PreparedStatement statement = getConnection().prepareStatement(sql.getSQL())) {
-            Object[] args = sql.getArgs();
-
+        try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
             for (int i = 0; i < args.length; i++) {
                 statement.setObject(i + 1, args[i]);
             }
@@ -71,24 +78,20 @@ public abstract class DatabaseImpl implements Database {
     public ResultSet query(@NotNull String sql) throws SQLException {
         this.checkConnection();
 
-        try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
-            return statement.executeQuery();
-        }
+        PreparedStatement statement = getConnection().prepareStatement(sql);
+        return statement.executeQuery();
     }
 
     @Override
-    public ResultSet query(@NotNull SQLStatement sql) throws SQLException {
+    public ResultSet query(@NotNull String sql, @NotNull Object... args) throws SQLException {
         this.checkConnection();
 
-        try (PreparedStatement statement = getConnection().prepareStatement(sql.getSQL())) {
-            Object[] args = sql.getArgs();
-
-            for (int i = 0; i < args.length; i++) {
-                statement.setObject(i + 1, args[i]);
-            }
-
-            return statement.executeQuery();
+        PreparedStatement statement = getConnection().prepareStatement(sql);
+        for (int i = 0; i < args.length; i++) {
+            statement.setObject(i + 1, args[i]);
         }
+
+        return statement.executeQuery();
     }
 
     @Override
@@ -102,7 +105,33 @@ public abstract class DatabaseImpl implements Database {
                 ");");
     }
 
-    private void checkConnection() throws SQLException {
+    @Override
+    public int insertInto(@NotNull String table, @NotNull Object... values) throws SQLException {
+        this.checkConnection();
+
+        return update("INSERT INTO " +
+                table +
+                " VALUES " +
+                "(" +
+                String.join(", ", StringUtil.repeat(values.length, "?")) +
+                ");", values);
+    }
+
+    @Override
+    public int insertInto(@NotNull String table, @NotNull Map<String, Object> values) throws SQLException {
+        this.checkConnection();
+
+        return update("INSERT INTO " +
+                table +
+                " (" +
+                String.join(", ", values.keySet()) +
+                ") VALUES " +
+                "(" +
+                String.join(", ", StringUtil.repeat(values.size(), "?")) +
+                ");", values.values().toArray());
+    }
+
+    protected void checkConnection() throws SQLException {
         if (!isConnected()) {
             throw new SQLException("Not connected to database");
         }

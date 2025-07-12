@@ -1,18 +1,18 @@
 package io.github.blockneko11.simpledbc.api;
 
-import io.github.blockneko11.simpledbc.api.statement.SQLStatement;
 import io.github.blockneko11.simpledbc.api.table.Table;
-import io.github.blockneko11.simpledbc.impl.DatabaseImpl;
+import io.github.blockneko11.simpledbc.impl.AbstractDatabase;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
 
 /**
  * 数据库接口。
- * @see DatabaseImpl
+ * @see AbstractDatabase
  * @author BlockNeko-11
  * @since 1.0.0
  */
@@ -26,32 +26,6 @@ public interface Database {
      */
     @NotNull
     String getUrl();
-
-    /**
-     * 获取数据库用户名。
-     * <p>
-     * 使用 SQLite 的实现时，此方法一定返回 {@code null}。
-     * @return 数据库用户名
-     * @since 1.0.2
-     */
-    String getUsername();
-
-    /**
-     * 获取数据库密码。
-     * <p>
-     * 使用 SQLite 的实现时，此方法一定返回 {@code null}。
-     * @return 数据库密码
-     * @since 1.0.2
-     */
-    String getPassword();
-
-    /**
-     * 获取数据库名称。
-     * <p>
-     * 使用 SQLite 的实现时，此方法一定返回 {@code null}。
-     * @return 数据库名称
-     */
-    String getDatabaseName();
 
     // connection
 
@@ -95,19 +69,14 @@ public interface Database {
     int update(@NotNull String sql) throws SQLException;
 
     /**
-     * @see #update(SQLStatement)
-     */
-    default int update(@NotNull String sql, Object... args) throws SQLException {
-        return update(SQLStatement.of(sql, args));
-    }
-
-    /**
      * 执行 SQL 语句。
-     * @param sql SQL 语句。一个 {@link SQLStatement} 实例
+     * @param sql SQL 语句
+     * @param args 参数
      * @return 影响的行数
      * @throws SQLException 如果 SQL 语句执行失败
+     * @since 1.1.2
      */
-    int update(@NotNull SQLStatement sql) throws SQLException;
+    int update(@NotNull String sql, @NotNull Object... args) throws SQLException;
 
     // query
 
@@ -121,21 +90,14 @@ public interface Database {
     ResultSet query(@NotNull String sql) throws SQLException;
 
     /**
-     * @see #query(SQLStatement)
-     * @since 1.1.0
-     */
-    default ResultSet query(@NotNull String sql, Object... args) throws SQLException {
-        return query(SQLStatement.of(sql, args));
-    }
-
-    /**
      * 执行 SQL 查询。
-     * @param sql SQL 语句。一个 {@link SQLStatement} 实例
+     * @param sql SQL 语句
+     * @param args 参数
      * @return 查询结果
      * @throws SQLException 如果 SQL 查询失败
-     * @since 1.1.0
+     * @since 1.1.2
      */
-    ResultSet query(@NotNull SQLStatement sql) throws SQLException;
+    ResultSet query(@NotNull String sql, @NotNull Object... args) throws SQLException;
 
     // table create
 
@@ -147,4 +109,10 @@ public interface Database {
      * @since 1.1.1
      */
     int createTable(@NotNull Table table) throws SQLException;
+
+    // insert
+
+    int insertInto(@NotNull String table, @NotNull Object... values) throws SQLException;
+
+    int insertInto(@NotNull String table, @NotNull Map<String, Object> values) throws SQLException;
 }
