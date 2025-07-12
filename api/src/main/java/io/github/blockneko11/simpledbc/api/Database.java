@@ -1,6 +1,5 @@
 package io.github.blockneko11.simpledbc.api;
 
-import io.github.blockneko11.simpledbc.api.statement.SQLStatement;
 import io.github.blockneko11.simpledbc.api.table.Table;
 import io.github.blockneko11.simpledbc.impl.DatabaseImpl;
 import org.jetbrains.annotations.NotNull;
@@ -9,7 +8,6 @@ import org.jetbrains.annotations.Nullable;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -97,19 +95,14 @@ public interface Database {
     int update(@NotNull String sql) throws SQLException;
 
     /**
-     * @see #update(SQLStatement)
-     */
-    default int update(@NotNull String sql, Object... args) throws SQLException {
-        return update(SQLStatement.of(sql, args));
-    }
-
-    /**
      * 执行 SQL 语句。
-     * @param sql SQL 语句。一个 {@link SQLStatement} 实例
+     * @param sql SQL 语句
+     * @param args 参数
      * @return 影响的行数
      * @throws SQLException 如果 SQL 语句执行失败
+     * @since 1.1.2
      */
-    int update(@NotNull SQLStatement sql) throws SQLException;
+    int update(@NotNull String sql, @NotNull Object... args) throws SQLException;
 
     // query
 
@@ -123,21 +116,14 @@ public interface Database {
     ResultSet query(@NotNull String sql) throws SQLException;
 
     /**
-     * @see #query(SQLStatement)
-     * @since 1.1.0
-     */
-    default ResultSet query(@NotNull String sql, Object... args) throws SQLException {
-        return query(SQLStatement.of(sql, args));
-    }
-
-    /**
      * 执行 SQL 查询。
-     * @param sql SQL 语句。一个 {@link SQLStatement} 实例
+     * @param sql SQL 语句
+     * @param args 参数
      * @return 查询结果
      * @throws SQLException 如果 SQL 查询失败
-     * @since 1.1.0
+     * @since 1.1.2
      */
-    ResultSet query(@NotNull SQLStatement sql) throws SQLException;
+    ResultSet query(@NotNull String sql, @NotNull Object... args) throws SQLException;
 
     // table create
 

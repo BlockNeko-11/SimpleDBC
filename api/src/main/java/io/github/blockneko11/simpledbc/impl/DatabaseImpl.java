@@ -55,12 +55,10 @@ public abstract class DatabaseImpl implements Database {
     }
 
     @Override
-    public int update(@NotNull SQLStatement sql) throws SQLException {
+    public int update(@NotNull String sql, @NotNull Object... args) throws SQLException {
         this.checkConnection();
 
-        try (PreparedStatement statement = getConnection().prepareStatement(sql.getSQL())) {
-            Object[] args = sql.getArgs();
-
+        try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
             for (int i = 0; i < args.length; i++) {
                 statement.setObject(i + 1, args[i]);
             }
@@ -78,12 +76,10 @@ public abstract class DatabaseImpl implements Database {
     }
 
     @Override
-    public ResultSet query(@NotNull SQLStatement sql) throws SQLException {
+    public ResultSet query(@NotNull String sql, @NotNull Object... args) throws SQLException {
         this.checkConnection();
 
-        PreparedStatement statement = getConnection().prepareStatement(sql.getSQL());
-        Object[] args = sql.getArgs();
-
+        PreparedStatement statement = getConnection().prepareStatement(sql);
         for (int i = 0; i < args.length; i++) {
             statement.setObject(i + 1, args[i]);
         }
