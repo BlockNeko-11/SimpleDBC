@@ -2,6 +2,7 @@ def subprojectDirs = [
         "api",
         "mysql",
         "mariadb",
+        "postgresql",
         "sqlite"
 ]
 

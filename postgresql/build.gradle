@@ -1,0 +1,4 @@
+dependencies {
+    api project(":api")
+    compileOnly "org.postgresql:postgresql:42.7.7"
+}
