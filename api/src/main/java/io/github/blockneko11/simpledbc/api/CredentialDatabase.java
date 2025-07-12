@@ -2,6 +2,11 @@ package io.github.blockneko11.simpledbc.api;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * 带有凭据（用户名、密码等）数据库接口，继承自 {@link Database}。
+ * @author BlockNeko-11
+ * @since 1.1.2
+ */
 public interface CredentialDatabase extends Database {
     /**
      * 获取数据库用户名。
