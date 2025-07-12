@@ -7,7 +7,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
-import java.util.Iterator;
 
 public abstract class AbstractInsertAction extends AbstractAction implements InsertAction {
     private final String table;
@@ -29,18 +28,12 @@ public abstract class AbstractInsertAction extends AbstractAction implements Ins
         this.ignore = ignore;
         return this;
     }
-
-//    @Override
-//    public int execute() throws SQLException {
-//        return getExecutor().update(this.buildSQL(), this.values.values().toArray());
-//    }
-//
+    
     protected static String buildSQL(boolean ignore,
                                      @NotNull String table,
                                      @Nullable Collection<String> columns,
                                      @NotNull Collection<Object> values) {
-        StringBuilder sqlBuilder = new StringBuilder(256);
-        sqlBuilder.append("INSERT ");
+        StringBuilder sqlBuilder = new StringBuilder("INSERT ");
 
         if (ignore) {
             sqlBuilder.append("IGNORE ");
@@ -53,11 +46,11 @@ public abstract class AbstractInsertAction extends AbstractAction implements Ins
         if (columns != null) {
             sqlBuilder.append("(");
 
-            Iterator<String> columnIterator = columns.iterator();
-            while (columnIterator.hasNext()) {
-                sqlBuilder.append(columnIterator.next());
+            String[] arr = columns.toArray(new String[0]);
+            for (int i = 0; i < arr.length; i++) {
+                sqlBuilder.append(arr[i]);
 
-                if (columnIterator.hasNext()) {
+                if (i < arr.length - 1) {
                     sqlBuilder.append(", ");
                 }
             }
@@ -67,11 +60,10 @@ public abstract class AbstractInsertAction extends AbstractAction implements Ins
 
         sqlBuilder.append("VALUES (");
 
-        Iterator<Object> valueIterator = values.iterator();
-        while (valueIterator.hasNext()) {
+        for (int i = 0; i < values.size(); i++) {
             sqlBuilder.append("?");
 
-            if (valueIterator.hasNext()) {
+            if (i < values.size() - 1) {
                 sqlBuilder.append(", ");
             }
         }
