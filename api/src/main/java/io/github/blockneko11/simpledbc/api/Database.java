@@ -34,6 +34,7 @@ public interface Database {
      * @return 数据库用户名
      * @since 1.0.2
      */
+    @Nullable
     String getUsername();
 
     /**
@@ -43,6 +44,7 @@ public interface Database {
      * @return 数据库密码
      * @since 1.0.2
      */
+    @Nullable
     String getPassword();
 
     /**
@@ -51,6 +53,7 @@ public interface Database {
      * 使用 SQLite 的实现时，此方法一定返回 {@code null}。
      * @return 数据库名称
      */
+    @Nullable
     String getDatabaseName();
 
     // connection
