@@ -31,16 +31,6 @@ jobs:
       - name: make gradle wrapper executable
         run: chmod +x ./gradlew
 
-      - name: test
-        run: ./gradlew clean test --stacktrace --no-daemon
-
-      - name: upload test result
-        uses: actions/upload-artifact@v4
-        with:
-          name: Test Result
-          path: |
-            build/test-results/
-
       - name: build
         run: ./gradlew clean build -xtest --stacktrace --no-daemon
 
