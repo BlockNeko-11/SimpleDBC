@@ -6,34 +6,13 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class MariaDBDatabase extends AbstractDatabase {
-    private final String username;
-    private final String password;
-    private final String databaseName;
+public class MariaDBDatabase extends CredentialDatabase {
 
     public MariaDBDatabase(@NotNull String url,
                            @NotNull String username,
                            @NotNull String password,
                            @NotNull String databaseName) {
-        super(url);
-        this.username = username;
-        this.password = password;
-        this.databaseName = databaseName;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.username;
-    }
-
-    @Override
-    public String getPassword() {
-        return this.password;
-    }
-
-    @Override
-    public String getDatabaseName() {
-        return this.databaseName;
+        super(url, username, password, databaseName);
     }
 
     @Override
@@ -46,9 +25,9 @@ public class MariaDBDatabase extends AbstractDatabase {
         if (!isConnected()) {
             String uri = StringUtil.format("jdbc:mariadb://{0}/{1}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC",
                     url,
-                    this.databaseName
+                    databaseName
             );
-            setConnection(DriverManager.getConnection(uri, this.username, this.password));
+            setConnection(DriverManager.getConnection(uri, username, password));
         }
     }
 }
