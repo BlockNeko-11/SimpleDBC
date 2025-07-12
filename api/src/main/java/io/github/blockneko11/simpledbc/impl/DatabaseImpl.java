@@ -3,6 +3,7 @@ package io.github.blockneko11.simpledbc.impl;
 import io.github.blockneko11.simpledbc.api.Database;
 import io.github.blockneko11.simpledbc.api.statement.SQLStatement;
 import io.github.blockneko11.simpledbc.api.table.Table;
+import io.github.blockneko11.simpledbc.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -10,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
 
 public abstract class DatabaseImpl implements Database {
     protected boolean initialized = false;
@@ -98,6 +100,32 @@ public abstract class DatabaseImpl implements Database {
                         " " +
                         column.getType()).toArray(String[]::new)) +
                 ");");
+    }
+
+    @Override
+    public int insertInto(@NotNull String table, @NotNull Object... values) throws SQLException {
+        this.checkConnection();
+
+        return update("INSERT INTO " +
+                table +
+                " VALUES " +
+                "(" +
+                String.join(", ", StringUtil.repeat(values.length, "?")) +
+                ");", values);
+    }
+
+    @Override
+    public int insertInto(@NotNull String table, @NotNull Map<String, Object> values) throws SQLException {
+        this.checkConnection();
+
+        return update("INSERT INTO " +
+                table +
+                " (" +
+                String.join(", ", values.keySet()) +
+                ") VALUES " +
+                "(" +
+                String.join(", ", StringUtil.repeat(values.size(), "?")) +
+                ");", values.values().toArray());
     }
 
     private void checkConnection() throws SQLException {

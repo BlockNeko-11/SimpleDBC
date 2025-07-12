@@ -9,6 +9,8 @@ import org.jetbrains.annotations.Nullable;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * 数据库接口。
@@ -147,4 +149,10 @@ public interface Database {
      * @since 1.1.1
      */
     int createTable(@NotNull Table table) throws SQLException;
+
+    // insert
+
+    int insertInto(@NotNull String table, @NotNull Object... values) throws SQLException;
+
+    int insertInto(@NotNull String table, @NotNull Map<String, Object> values) throws SQLException;
 }
