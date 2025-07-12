@@ -123,7 +123,7 @@ public abstract class AbstractDatabase implements Database {
                 ");", values.values().toArray());
     }
 
-    private void checkConnection() throws SQLException {
+    protected void checkConnection() throws SQLException {
         if (!isConnected()) {
             throw new SQLException("Not connected to database");
         }

@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class MySQLDatabase extends CredentialDatabase {
+public class MySQLDatabase extends AbstractCredentialDatabase {
     public MySQLDatabase(@NotNull String url,
                          @NotNull String username,
                          @NotNull String password,

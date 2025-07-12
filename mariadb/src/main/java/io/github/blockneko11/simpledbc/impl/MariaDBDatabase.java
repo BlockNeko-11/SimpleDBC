@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class MariaDBDatabase extends CredentialDatabase {
+public class MariaDBDatabase extends AbstractCredentialDatabase {
 
     public MariaDBDatabase(@NotNull String url,
                            @NotNull String username,

@@ -1,13 +1,13 @@
 package io.github.blockneko11.impl;
 
-import io.github.blockneko11.simpledbc.impl.CredentialDatabase;
+import io.github.blockneko11.simpledbc.impl.AbstractCredentialDatabase;
 import io.github.blockneko11.simpledbc.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class PostgreSQLDatabase extends CredentialDatabase {
+public class PostgreSQLDatabase extends AbstractCredentialDatabase {
     protected PostgreSQLDatabase(@NotNull String url,
                                  @NotNull String username,
                                  @NotNull String password,
@@ -25,9 +25,9 @@ public class PostgreSQLDatabase extends CredentialDatabase {
         if (!isConnected()) {
             String uri = StringUtil.format("jdbc:postgresql://{0}/{1}",
                     url,
-                    this.databaseName
+                    databaseName
             );
-            setConnection(DriverManager.getConnection(uri, this.username, this.password));
+            setConnection(DriverManager.getConnection(uri, username, password));
         }
     }
 }
