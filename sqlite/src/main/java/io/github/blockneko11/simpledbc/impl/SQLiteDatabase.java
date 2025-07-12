@@ -6,8 +6,8 @@ import org.jetbrains.annotations.Nullable;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class SQLiteDatabaseImpl extends DatabaseImpl {
-    public SQLiteDatabaseImpl(@NotNull String path) {
+public class SQLiteDatabase extends AbstractDatabase {
+    public SQLiteDatabase(@NotNull String path) {
         super(path);
     }
 

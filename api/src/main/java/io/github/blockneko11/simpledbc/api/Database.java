@@ -1,7 +1,7 @@
 package io.github.blockneko11.simpledbc.api;
 
 import io.github.blockneko11.simpledbc.api.table.Table;
-import io.github.blockneko11.simpledbc.impl.DatabaseImpl;
+import io.github.blockneko11.simpledbc.impl.AbstractDatabase;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,7 +12,7 @@ import java.util.Map;
 
 /**
  * 数据库接口。
- * @see DatabaseImpl
+ * @see AbstractDatabase
  * @author BlockNeko-11
  * @since 1.0.0
  */

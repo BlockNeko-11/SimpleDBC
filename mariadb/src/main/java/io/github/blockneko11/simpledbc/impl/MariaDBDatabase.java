@@ -6,15 +6,15 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class MariaDBDatabaseImpl extends DatabaseImpl {
+public class MariaDBDatabase extends AbstractDatabase {
     private final String username;
     private final String password;
     private final String databaseName;
 
-    public MariaDBDatabaseImpl(@NotNull String url,
-                               @NotNull String username,
-                               @NotNull String password,
-                               @NotNull String databaseName) {
+    public MariaDBDatabase(@NotNull String url,
+                           @NotNull String username,
+                           @NotNull String password,
+                           @NotNull String databaseName) {
         super(url);
         this.username = username;
         this.password = password;

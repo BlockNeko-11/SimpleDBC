@@ -6,15 +6,15 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class MySQLDatabaseImpl extends DatabaseImpl {
+public class MySQLDatabase extends AbstractDatabase {
     private final String username;
     private final String password;
     private final String databaseName;
 
-    public MySQLDatabaseImpl(@NotNull String url,
-                             @NotNull String username,
-                             @NotNull String password,
-                             @NotNull String databaseName) {
+    public MySQLDatabase(@NotNull String url,
+                         @NotNull String username,
+                         @NotNull String password,
+                         @NotNull String databaseName) {
         super(url);
         this.username = username;
         this.password = password;

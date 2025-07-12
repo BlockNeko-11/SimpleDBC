@@ -12,12 +12,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-public abstract class DatabaseImpl implements Database {
+public abstract class AbstractDatabase implements Database {
     protected boolean initialized = false;
     protected final String url;
     private Connection connection = null;
 
-    protected DatabaseImpl(@NotNull String url) {
+    protected AbstractDatabase(@NotNull String url) {
         this.url = url;
     }
 
