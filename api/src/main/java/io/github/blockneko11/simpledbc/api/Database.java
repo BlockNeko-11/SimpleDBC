@@ -9,7 +9,6 @@ import org.jetbrains.annotations.Nullable;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Map;
 
 /**
  * 数据库接口。
@@ -113,7 +112,27 @@ public interface Database {
 
     // insert
 
+    /**
+     * 获取一个 {@link InsertAction} 实例，用于插入数据。
+     * <p>
+     * 本方法仅适用于以下 SQL 语句：
+     * <pre>INSERT (IGNORE) INTO [table] VALUES (value1, value2, ...);</pre>
+     * @param table 表名
+     * @return 插入数据操作。一个 {@link InsertAction} 实例
+     * @throws SQLException 如果没有连接到数据库
+     * @since 1.1.3
+     */
     InsertAction valueInsert(@NotNull String table) throws SQLException;
 
+    /**
+     * 获取一个 {@link InsertAction} 实例，用于插入数据。
+     * <p>
+     * 本方法仅适用于以下 SQL 语句：
+     * <pre>INSERT (IGNORE) INTO [table] ([column1], [column2], ...) VALUES (value1, value2, ...);</pre>
+     * @param table 表名
+     * @return 插入数据操作。一个 {@link InsertAction} 实例
+     * @throws SQLException 如果没有连接到数据库
+     * @since 1.1.3
+     */
     InsertAction columnInsert(@NotNull String table) throws SQLException;
 }
