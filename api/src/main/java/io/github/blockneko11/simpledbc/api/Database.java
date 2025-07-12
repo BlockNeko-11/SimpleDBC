@@ -1,7 +1,7 @@
 package io.github.blockneko11.simpledbc.api;
 
 import io.github.blockneko11.simpledbc.api.action.insert.InsertAction;
-import io.github.blockneko11.simpledbc.api.table.Table;
+import io.github.blockneko11.simpledbc.api.action.table.TableCreateAction;
 import io.github.blockneko11.simpledbc.impl.AbstractDatabase;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -102,13 +102,13 @@ public interface Database {
     // table create
 
     /**
-     * 创建表。
-     * @param table 表。一个 {@link Table} 实例
-     * @return 创建的表行数
-     * @throws SQLException 如果创建表失败
-     * @since 1.1.1
+     * 获取一个 {@link TableCreateAction} 实例，用于创建表。
+     * @param table 表名
+     * @return 一个 {@link TableCreateAction} 实例
+     * @throws SQLException 如果没有连接到数据库
+     * @since 1.1.3
      */
-    int createTable(@NotNull Table table) throws SQLException;
+    TableCreateAction createTable(@NotNull String table) throws SQLException;
 
     // insert
 
@@ -118,7 +118,7 @@ public interface Database {
      * 本方法仅适用于以下 SQL 语句：
      * <pre>INSERT (IGNORE) INTO [table] VALUES (value1, value2, ...);</pre>
      * @param table 表名
-     * @return 插入数据操作。一个 {@link InsertAction} 实例
+     * @return 一个 {@link InsertAction} 实例
      * @throws SQLException 如果没有连接到数据库
      * @since 1.1.3
      */
@@ -130,7 +130,7 @@ public interface Database {
      * 本方法仅适用于以下 SQL 语句：
      * <pre>INSERT (IGNORE) INTO [table] ([column1], [column2], ...) VALUES (value1, value2, ...);</pre>
      * @param table 表名
-     * @return 插入数据操作。一个 {@link InsertAction} 实例
+     * @return 一个 {@link InsertAction} 实例
      * @throws SQLException 如果没有连接到数据库
      * @since 1.1.3
      */

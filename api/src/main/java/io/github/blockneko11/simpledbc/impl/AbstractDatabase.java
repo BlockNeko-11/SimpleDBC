@@ -1,10 +1,12 @@
 package io.github.blockneko11.simpledbc.impl;
 
 import io.github.blockneko11.simpledbc.api.Database;
+import io.github.blockneko11.simpledbc.api.action.TableAction;
 import io.github.blockneko11.simpledbc.api.action.insert.InsertAction;
-import io.github.blockneko11.simpledbc.api.table.Table;
+import io.github.blockneko11.simpledbc.api.action.table.TableCreateAction;
 import io.github.blockneko11.simpledbc.impl.action.insert.ColumnInsertAction;
 import io.github.blockneko11.simpledbc.impl.action.insert.ValueInsertAction;
+import io.github.blockneko11.simpledbc.impl.action.table.TableCreateActionImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -96,14 +98,17 @@ public abstract class AbstractDatabase implements Database {
     }
 
     @Override
-    public int createTable(@NotNull Table table) throws SQLException {
-        return this.update("CREATE TABLE IF NOT EXISTS " +
-                table.getName() +
-                " (" +
-                String.join(", ", table.getColumns().stream().map(column -> column.getName() +
-                        " " +
-                        column.getType()).toArray(String[]::new)) +
-                ");");
+    public TableCreateAction createTable(@NotNull String table) throws SQLException {
+        this.checkConnection();
+        return new TableCreateActionImpl(this, table);
+
+//        return this.update("CREATE TABLE IF NOT EXISTS " +
+//                table.getName() +
+//                " (" +
+//                String.join(", ", table.getColumns().stream().map(column -> column.getName() +
+//                        " " +
+//                        column.getType()).toArray(String[]::new)) +
+//                ");");
     }
 
     @Override
