@@ -4,9 +4,9 @@ import io.github.blockneko11.simpledbc.api.CredentialDatabase;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractCredentialDatabase extends AbstractDatabase implements CredentialDatabase {
-    protected final String username;
-    protected final String password;
-    protected final String databaseName;
+    private final String username;
+    private final String password;
+    private final String databaseName;
 
     protected AbstractCredentialDatabase(@NotNull String url,
                                          @NotNull String username,

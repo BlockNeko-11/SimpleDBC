@@ -16,17 +16,17 @@ public class MySQLDatabase extends AbstractCredentialDatabase {
 
     @Override
     public void connect() throws ClassNotFoundException, SQLException {
-        if (!initialized) {
+        if (!isInitialized()) {
             Class.forName("com.mysql.jdbc.Driver");
-            initialized = true;
+            setInitialized(true);
         }
 
         if (!isConnected()) {
             String uri = StringUtil.format("jdbc:mysql://{0}/{1}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC",
-                    url,
-                    databaseName
+                    getUrl(),
+                    getDatabaseName()
             );
-            setConnection(DriverManager.getConnection(uri, username, password));
+            setConnection(DriverManager.getConnection(uri, getUsername(), getPassword()));
         }
     }
 }

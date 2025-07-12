@@ -12,13 +12,13 @@ public class SQLiteDatabase extends AbstractDatabase {
 
     @Override
     public void connect() throws ClassNotFoundException, SQLException {
-        if (!initialized) {
+        if (!isInitialized()) {
             Class.forName("org.sqlite.JDBC");
-            initialized = true;
+            setInitialized(true);
         }
 
         if (!isConnected()) {
-            setConnection(DriverManager.getConnection(url));
+            setConnection(DriverManager.getConnection(getUrl()));
         }
     }
 }

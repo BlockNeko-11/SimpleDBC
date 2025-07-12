@@ -13,8 +13,8 @@ import java.sql.SQLException;
 import java.util.Map;
 
 public abstract class AbstractDatabase implements Database {
-    protected boolean initialized = false;
-    protected final String url;
+    private boolean initialized = false;
+    private final String url;
     private Connection connection = null;
 
     protected AbstractDatabase(@NotNull String url) {
@@ -42,6 +42,14 @@ public abstract class AbstractDatabase implements Database {
         if (isConnected()) {
             getConnection().close();
         }
+    }
+
+    protected boolean isInitialized() {
+        return this.initialized;
+    }
+
+    protected void setInitialized(boolean initialized) {
+        this.initialized = initialized;
     }
 
     @Override

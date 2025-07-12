@@ -17,17 +17,17 @@ public class PostgreSQLDatabase extends AbstractCredentialDatabase {
 
     @Override
     public void connect() throws ClassNotFoundException, SQLException {
-        if (!initialized) {
+        if (!isInitialized()) {
             Class.forName("org.postgresql.Driver");
-            initialized = true;
+            setInitialized(true);
         }
 
         if (!isConnected()) {
             String uri = StringUtil.format("jdbc:postgresql://{0}/{1}",
-                    url,
-                    databaseName
+                    getUrl(),
+                    getDatabaseName()
             );
-            setConnection(DriverManager.getConnection(uri, username, password));
+            setConnection(DriverManager.getConnection(uri, getUsername(), getPassword()));
         }
     }
 }
