@@ -27,7 +27,7 @@ public class TableCreateActionImpl extends AbstractTableAction implements TableC
 
     @Override
     public int execute() throws SQLException {
-        return getExecutor().update(this.buildSQL());
+        return getExecutor().execute(this.buildSQL());
     }
 
     private String buildSQL() {

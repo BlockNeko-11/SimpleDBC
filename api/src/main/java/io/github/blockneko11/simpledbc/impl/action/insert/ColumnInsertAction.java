@@ -24,6 +24,6 @@ public class ColumnInsertAction extends AbstractInsertAction {
     @Override
     public int execute() throws SQLException {
         String sql = buildSQL(this.ignore, getTable(), this.values.keySet(), this.values.values());
-        return getExecutor().update(sql, this.values.values().toArray());
+        return getExecutor().execute(sql, this.values.values().toArray());
     }
 }

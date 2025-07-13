@@ -1,5 +1,6 @@
 package io.github.blockneko11.simpledbc.api;
 
+import io.github.blockneko11.simpledbc.api.action.delete.DeleteAction;
 import io.github.blockneko11.simpledbc.api.action.insert.InsertAction;
 import io.github.blockneko11.simpledbc.api.action.replace.ReplaceAction;
 import io.github.blockneko11.simpledbc.api.action.table.TableCreateAction;
@@ -66,8 +67,9 @@ public interface Database {
      * @param sql SQL 语句
      * @return 影响的行数
      * @throws SQLException 如果 SQL 语句执行失败
+     * @since 1.1.3
      */
-    int update(@NotNull String sql) throws SQLException;
+    int execute(@NotNull String sql) throws SQLException;
 
     /**
      * 执行 SQL 语句。
@@ -75,9 +77,9 @@ public interface Database {
      * @param args 参数
      * @return 影响的行数
      * @throws SQLException 如果 SQL 语句执行失败
-     * @since 1.1.2
+     * @since 1.1.3
      */
-    int update(@NotNull String sql, @NotNull Object... args) throws SQLException;
+    int execute(@NotNull String sql, @NotNull Object... args) throws SQLException;
 
     // query
 
@@ -140,4 +142,6 @@ public interface Database {
     ReplaceAction valueReplace(@NotNull String table) throws SQLException;
 
     ReplaceAction columnReplace(@NotNull String table) throws SQLException;
+
+    DeleteAction delete(@NotNull String table) throws SQLException;
 }

@@ -24,6 +24,6 @@ public class ColumnReplaceAction extends AbstractReplaceAction {
     @Override
     public int execute() throws SQLException {
         String sql = buildSQL(getTable(), this.values.keySet(), this.values.values());
-        return getExecutor().update(sql, this.values.values().toArray());
+        return getExecutor().execute(sql, this.values.values().toArray());
     }
 }

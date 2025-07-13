@@ -24,6 +24,6 @@ public class ValueInsertAction extends AbstractInsertAction {
     @Override
     public int execute() throws SQLException {
         String sql = buildSQL(this.ignore, getTable(), null, this.values);
-        return getExecutor().update(sql, this.values.toArray());
+        return getExecutor().execute(sql, this.values.toArray());
     }
 }

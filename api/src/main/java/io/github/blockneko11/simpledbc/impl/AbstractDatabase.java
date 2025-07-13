@@ -1,9 +1,11 @@
 package io.github.blockneko11.simpledbc.impl;
 
 import io.github.blockneko11.simpledbc.api.Database;
+import io.github.blockneko11.simpledbc.api.action.delete.DeleteAction;
 import io.github.blockneko11.simpledbc.api.action.insert.InsertAction;
 import io.github.blockneko11.simpledbc.api.action.replace.ReplaceAction;
 import io.github.blockneko11.simpledbc.api.action.table.TableCreateAction;
+import io.github.blockneko11.simpledbc.impl.action.delete.DeleteActionImpl;
 import io.github.blockneko11.simpledbc.impl.action.insert.ColumnInsertAction;
 import io.github.blockneko11.simpledbc.impl.action.insert.ValueInsertAction;
 import io.github.blockneko11.simpledbc.impl.action.replace.ColumnReplaceAction;
@@ -58,7 +60,7 @@ public abstract class AbstractDatabase implements Database {
     }
 
     @Override
-    public int update(@NotNull String sql) throws SQLException {
+    public int execute(@NotNull String sql) throws SQLException {
         this.checkConnection();
 
         try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
@@ -67,7 +69,7 @@ public abstract class AbstractDatabase implements Database {
     }
 
     @Override
-    public int update(@NotNull String sql, @NotNull Object... args) throws SQLException {
+    public int execute(@NotNull String sql, @NotNull Object... args) throws SQLException {
         this.checkConnection();
 
         try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
@@ -131,6 +133,13 @@ public abstract class AbstractDatabase implements Database {
         this.checkConnection();
 
         return new ColumnReplaceAction(this, table);
+    }
+
+    @Override
+    public DeleteAction delete(@NotNull String table) throws SQLException {
+        this.checkConnection();
+
+        return new DeleteActionImpl(this, table);
     }
 
     protected void checkConnection() throws SQLException {
