@@ -1,6 +1,9 @@
 package io.github.blockneko11.simpledbc.api;
 
-import io.github.blockneko11.simpledbc.api.table.Table;
+import io.github.blockneko11.simpledbc.api.action.delete.DeleteAction;
+import io.github.blockneko11.simpledbc.api.action.insert.InsertAction;
+import io.github.blockneko11.simpledbc.api.action.replace.ReplaceAction;
+import io.github.blockneko11.simpledbc.api.action.table.TableCreateAction;
 import io.github.blockneko11.simpledbc.impl.AbstractDatabase;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -8,7 +11,6 @@ import org.jetbrains.annotations.Nullable;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Map;
 
 /**
  * 数据库接口。
@@ -65,8 +67,9 @@ public interface Database {
      * @param sql SQL 语句
      * @return 影响的行数
      * @throws SQLException 如果 SQL 语句执行失败
+     * @since 1.1.3
      */
-    int update(@NotNull String sql) throws SQLException;
+    int execute(@NotNull String sql) throws SQLException;
 
     /**
      * 执行 SQL 语句。
@@ -74,9 +77,9 @@ public interface Database {
      * @param args 参数
      * @return 影响的行数
      * @throws SQLException 如果 SQL 语句执行失败
-     * @since 1.1.2
+     * @since 1.1.3
      */
-    int update(@NotNull String sql, @NotNull Object... args) throws SQLException;
+    int execute(@NotNull String sql, @NotNull Object... args) throws SQLException;
 
     // query
 
@@ -102,17 +105,70 @@ public interface Database {
     // table create
 
     /**
-     * 创建表。
-     * @param table 表。一个 {@link Table} 实例
-     * @return 创建的表行数
-     * @throws SQLException 如果创建表失败
-     * @since 1.1.1
+     * 获取一个 {@link TableCreateAction} 实例，用于创建表。
+     * @param table 表名
+     * @return 一个 {@link TableCreateAction} 实例
+     * @throws SQLException 如果没有连接到数据库
+     * @since 1.1.3
      */
-    int createTable(@NotNull Table table) throws SQLException;
+    TableCreateAction createTable(@NotNull String table) throws SQLException;
 
     // insert
 
-    int insertInto(@NotNull String table, @NotNull Object... values) throws SQLException;
+    /**
+     * 获取一个 {@link InsertAction} 实例，用于插入数据。
+     * <p>
+     * 本方法仅适用于以下 SQL 语句：
+     * <pre>INSERT (IGNORE) INTO [table] VALUES (value1, value2, ...);</pre>
+     * @param table 表名
+     * @return 一个 {@link InsertAction} 实例
+     * @throws SQLException 如果没有连接到数据库
+     * @since 1.1.3
+     */
+    InsertAction valueInsert(@NotNull String table) throws SQLException;
 
-    int insertInto(@NotNull String table, @NotNull Map<String, Object> values) throws SQLException;
+    /**
+     * 获取一个 {@link InsertAction} 实例，用于插入数据。
+     * <p>
+     * 本方法仅适用于以下 SQL 语句：
+     * <pre>INSERT (IGNORE) INTO [table] ([column1], [column2], ...) VALUES (value1, value2, ...);</pre>
+     * @param table 表名
+     * @return 一个 {@link InsertAction} 实例
+     * @throws SQLException 如果没有连接到数据库
+     * @since 1.1.3
+     */
+    InsertAction columnInsert(@NotNull String table) throws SQLException;
+
+    /**
+     * 获取一个 {@link ReplaceAction} 实例，用于替换数据。
+     * <p>
+     * 本方法仅适用于以下 SQL 语句：
+     * <pre>REPLACE INTO [table] VALUES (value1, value2, ...);</pre>
+     * @param table 表名
+     * @return 一个 {@link ReplaceAction} 实例
+     * @throws SQLException 如果没有连接到数据库
+     */
+    ReplaceAction valueReplace(@NotNull String table) throws SQLException;
+
+    /**
+     * 获取一个 {@link ReplaceAction} 实例，用于替换数据。
+     * <p>
+     * 本方法仅适用于以下 SQL 语句：
+     * <pre>REPLACE INTO [table] ([column1], [column2], ...) VALUES (value1, value2, ...);</pre>
+     * @param table 表名
+     * @return 一个 {@link ReplaceAction} 实例
+     * @throws SQLException 如果没有连接到数据库
+     */
+    ReplaceAction columnReplace(@NotNull String table) throws SQLException;
+
+    /**
+     * 获取一个 {@link DeleteAction} 实例，用于删除数据。
+     * <p>
+     * 本方法仅适用于以下 SQL 语句：
+     * <pre>DELETE FROM [table] (WHERE [condition]);</pre>
+     * @param table 表名
+     * @return 一个 {@link DeleteAction} 实例
+     * @throws SQLException 如果没有连接到数据库
+     */
+    DeleteAction delete(@NotNull String table) throws SQLException;
 }

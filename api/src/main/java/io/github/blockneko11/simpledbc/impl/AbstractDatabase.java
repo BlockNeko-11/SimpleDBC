@@ -1,8 +1,16 @@
 package io.github.blockneko11.simpledbc.impl;
 
 import io.github.blockneko11.simpledbc.api.Database;
-import io.github.blockneko11.simpledbc.api.table.Table;
-import io.github.blockneko11.simpledbc.util.StringUtil;
+import io.github.blockneko11.simpledbc.api.action.delete.DeleteAction;
+import io.github.blockneko11.simpledbc.api.action.insert.InsertAction;
+import io.github.blockneko11.simpledbc.api.action.replace.ReplaceAction;
+import io.github.blockneko11.simpledbc.api.action.table.TableCreateAction;
+import io.github.blockneko11.simpledbc.impl.action.delete.DeleteActionImpl;
+import io.github.blockneko11.simpledbc.impl.action.insert.ColumnInsertAction;
+import io.github.blockneko11.simpledbc.impl.action.insert.ValueInsertAction;
+import io.github.blockneko11.simpledbc.impl.action.replace.ColumnReplaceAction;
+import io.github.blockneko11.simpledbc.impl.action.replace.ValueReplaceAction;
+import io.github.blockneko11.simpledbc.impl.action.table.TableCreateActionImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -10,7 +18,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Map;
 
 public abstract class AbstractDatabase implements Database {
     private boolean initialized = false;
@@ -53,7 +60,7 @@ public abstract class AbstractDatabase implements Database {
     }
 
     @Override
-    public int update(@NotNull String sql) throws SQLException {
+    public int execute(@NotNull String sql) throws SQLException {
         this.checkConnection();
 
         try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
@@ -62,7 +69,7 @@ public abstract class AbstractDatabase implements Database {
     }
 
     @Override
-    public int update(@NotNull String sql, @NotNull Object... args) throws SQLException {
+    public int execute(@NotNull String sql, @NotNull Object... args) throws SQLException {
         this.checkConnection();
 
         try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
@@ -95,40 +102,44 @@ public abstract class AbstractDatabase implements Database {
     }
 
     @Override
-    public int createTable(@NotNull Table table) throws SQLException {
-        return this.update("CREATE TABLE IF NOT EXISTS " +
-                table.getName() +
-                " (" +
-                String.join(", ", table.getColumns().stream().map(column -> column.getName() +
-                        " " +
-                        column.getType()).toArray(String[]::new)) +
-                ");");
+    public TableCreateAction createTable(@NotNull String table) throws SQLException {
+        this.checkConnection();
+        return new TableCreateActionImpl(this, table);
     }
 
     @Override
-    public int insertInto(@NotNull String table, @NotNull Object... values) throws SQLException {
+    public InsertAction valueInsert(@NotNull String table) throws SQLException {
         this.checkConnection();
 
-        return update("INSERT INTO " +
-                table +
-                " VALUES " +
-                "(" +
-                String.join(", ", StringUtil.repeat(values.length, "?")) +
-                ");", values);
+        return new ValueInsertAction(this, table);
     }
 
     @Override
-    public int insertInto(@NotNull String table, @NotNull Map<String, Object> values) throws SQLException {
+    public InsertAction columnInsert(@NotNull String table) throws SQLException {
         this.checkConnection();
 
-        return update("INSERT INTO " +
-                table +
-                " (" +
-                String.join(", ", values.keySet()) +
-                ") VALUES " +
-                "(" +
-                String.join(", ", StringUtil.repeat(values.size(), "?")) +
-                ");", values.values().toArray());
+        return new ColumnInsertAction(this, table);
+    }
+
+    @Override
+    public ReplaceAction valueReplace(@NotNull String table) throws SQLException {
+        this.checkConnection();
+
+        return new ValueReplaceAction(this, table);
+    }
+
+    @Override
+    public ReplaceAction columnReplace(@NotNull String table) throws SQLException {
+        this.checkConnection();
+
+        return new ColumnReplaceAction(this, table);
+    }
+
+    @Override
+    public DeleteAction delete(@NotNull String table) throws SQLException {
+        this.checkConnection();
+
+        return new DeleteActionImpl(this, table);
     }
 
     protected void checkConnection() throws SQLException {
