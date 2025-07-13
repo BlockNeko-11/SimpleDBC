@@ -4,7 +4,7 @@ import io.github.blockneko11.simpledbc.api.Database;
 import io.github.blockneko11.simpledbc.api.action.table.Attribute;
 import io.github.blockneko11.simpledbc.api.action.table.Column;
 import io.github.blockneko11.simpledbc.api.action.table.TableCreateAction;
-import io.github.blockneko11.simpledbc.impl.action.AbstractAction;
+import io.github.blockneko11.simpledbc.impl.action.AbstractTableAction;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.SQLException;
@@ -12,19 +12,11 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class TableCreateActionImpl extends AbstractAction implements TableCreateAction {
-    private final String table;
+public class TableCreateActionImpl extends AbstractTableAction implements TableCreateAction {
     private final Set<Column> columns = new LinkedHashSet<>();
 
     public TableCreateActionImpl(@NotNull Database executor, @NotNull String table) {
-        super(executor);
-        this.table = table;
-    }
-
-    @NotNull
-    @Override
-    public String getTable() {
-        return this.table;
+        super(executor, table);
     }
 
     @Override
@@ -40,7 +32,7 @@ public class TableCreateActionImpl extends AbstractAction implements TableCreate
 
     private String buildSQL() {
         StringBuilder sqlBuilder = new StringBuilder("CREATE TABLE IF NOT EXISTS ")
-                .append(this.table)
+                .append(getTable())
                 .append(" (");
 
         Iterator<Column> columnIterator = this.columns.iterator();

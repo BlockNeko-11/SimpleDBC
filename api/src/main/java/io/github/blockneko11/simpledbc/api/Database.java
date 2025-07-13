@@ -1,6 +1,7 @@
 package io.github.blockneko11.simpledbc.api;
 
 import io.github.blockneko11.simpledbc.api.action.insert.InsertAction;
+import io.github.blockneko11.simpledbc.api.action.replace.ReplaceAction;
 import io.github.blockneko11.simpledbc.api.action.table.TableCreateAction;
 import io.github.blockneko11.simpledbc.impl.AbstractDatabase;
 import org.jetbrains.annotations.NotNull;
@@ -135,4 +136,8 @@ public interface Database {
      * @since 1.1.3
      */
     InsertAction columnInsert(@NotNull String table) throws SQLException;
+
+    ReplaceAction valueReplace(@NotNull String table) throws SQLException;
+
+    ReplaceAction columnReplace(@NotNull String table) throws SQLException;
 }

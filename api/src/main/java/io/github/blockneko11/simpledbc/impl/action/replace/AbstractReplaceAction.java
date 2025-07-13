@@ -1,38 +1,24 @@
-package io.github.blockneko11.simpledbc.impl.action.insert;
+package io.github.blockneko11.simpledbc.impl.action.replace;
 
 import io.github.blockneko11.simpledbc.api.Database;
-import io.github.blockneko11.simpledbc.api.action.insert.InsertAction;
+import io.github.blockneko11.simpledbc.api.action.replace.ReplaceAction;
 import io.github.blockneko11.simpledbc.impl.action.AbstractTableAction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
-public abstract class AbstractInsertAction extends AbstractTableAction implements InsertAction {
-    protected boolean ignore = false;
-
-    protected AbstractInsertAction(@NotNull Database executor, @NotNull String table) {
+public abstract class AbstractReplaceAction extends AbstractTableAction implements ReplaceAction {
+    protected AbstractReplaceAction(@NotNull Database executor, @NotNull String table) {
         super(executor, table);
     }
 
-    @Override
-    public InsertAction ignore(boolean ignore) {
-        this.ignore = ignore;
-        return this;
-    }
-    
-    protected static String buildSQL(boolean ignore,
-                                     @NotNull String table,
+    protected static String buildSQL(@NotNull String table,
                                      @Nullable Collection<String> columns,
                                      @NotNull Collection<Object> values) {
-        StringBuilder sqlBuilder = new StringBuilder("INSERT ");
+        StringBuilder sqlBuilder = new StringBuilder("REPLACE INTO ");
 
-        if (ignore) {
-            sqlBuilder.append("IGNORE ");
-        }
-
-        sqlBuilder.append("INTO ")
-                .append(table)
+        sqlBuilder.append(table)
                 .append(" ");
 
         if (columns != null) {

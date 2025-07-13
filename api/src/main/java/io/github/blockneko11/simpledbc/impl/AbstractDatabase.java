@@ -2,9 +2,12 @@ package io.github.blockneko11.simpledbc.impl;
 
 import io.github.blockneko11.simpledbc.api.Database;
 import io.github.blockneko11.simpledbc.api.action.insert.InsertAction;
+import io.github.blockneko11.simpledbc.api.action.replace.ReplaceAction;
 import io.github.blockneko11.simpledbc.api.action.table.TableCreateAction;
 import io.github.blockneko11.simpledbc.impl.action.insert.ColumnInsertAction;
 import io.github.blockneko11.simpledbc.impl.action.insert.ValueInsertAction;
+import io.github.blockneko11.simpledbc.impl.action.replace.ColumnReplaceAction;
+import io.github.blockneko11.simpledbc.impl.action.replace.ValueReplaceAction;
 import io.github.blockneko11.simpledbc.impl.action.table.TableCreateActionImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -100,14 +103,6 @@ public abstract class AbstractDatabase implements Database {
     public TableCreateAction createTable(@NotNull String table) throws SQLException {
         this.checkConnection();
         return new TableCreateActionImpl(this, table);
-
-//        return this.update("CREATE TABLE IF NOT EXISTS " +
-//                table.getName() +
-//                " (" +
-//                String.join(", ", table.getColumns().stream().map(column -> column.getName() +
-//                        " " +
-//                        column.getType()).toArray(String[]::new)) +
-//                ");");
     }
 
     @Override
@@ -122,6 +117,20 @@ public abstract class AbstractDatabase implements Database {
         this.checkConnection();
 
         return new ColumnInsertAction(this, table);
+    }
+
+    @Override
+    public ReplaceAction valueReplace(@NotNull String table) throws SQLException {
+        this.checkConnection();
+
+        return new ValueReplaceAction(this, table);
+    }
+
+    @Override
+    public ReplaceAction columnReplace(@NotNull String table) throws SQLException {
+        this.checkConnection();
+
+        return new ColumnReplaceAction(this, table);
     }
 
     protected void checkConnection() throws SQLException {
