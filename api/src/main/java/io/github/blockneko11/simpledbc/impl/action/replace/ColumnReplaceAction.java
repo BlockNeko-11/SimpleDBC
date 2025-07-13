@@ -16,7 +16,7 @@ public class ColumnReplaceAction extends AbstractReplaceAction {
     }
 
     @Override
-    public ReplaceAction value(String key, Object value) {
+    public ReplaceAction value(@NotNull String key, @NotNull Object value) {
         this.values.put(key, value);
         return this;
     }

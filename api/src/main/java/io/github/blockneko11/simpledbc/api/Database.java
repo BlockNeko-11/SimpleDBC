@@ -139,9 +139,36 @@ public interface Database {
      */
     InsertAction columnInsert(@NotNull String table) throws SQLException;
 
+    /**
+     * 获取一个 {@link ReplaceAction} 实例，用于替换数据。
+     * <p>
+     * 本方法仅适用于以下 SQL 语句：
+     * <pre>REPLACE INTO [table] VALUES (value1, value2, ...);</pre>
+     * @param table 表名
+     * @return 一个 {@link ReplaceAction} 实例
+     * @throws SQLException 如果没有连接到数据库
+     */
     ReplaceAction valueReplace(@NotNull String table) throws SQLException;
 
+    /**
+     * 获取一个 {@link ReplaceAction} 实例，用于替换数据。
+     * <p>
+     * 本方法仅适用于以下 SQL 语句：
+     * <pre>REPLACE INTO [table] ([column1], [column2], ...) VALUES (value1, value2, ...);</pre>
+     * @param table 表名
+     * @return 一个 {@link ReplaceAction} 实例
+     * @throws SQLException 如果没有连接到数据库
+     */
     ReplaceAction columnReplace(@NotNull String table) throws SQLException;
 
+    /**
+     * 获取一个 {@link DeleteAction} 实例，用于删除数据。
+     * <p>
+     * 本方法仅适用于以下 SQL 语句：
+     * <pre>DELETE FROM [table] (WHERE [condition]);</pre>
+     * @param table 表名
+     * @return 一个 {@link DeleteAction} 实例
+     * @throws SQLException 如果没有连接到数据库
+     */
     DeleteAction delete(@NotNull String table) throws SQLException;
 }

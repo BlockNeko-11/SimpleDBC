@@ -3,6 +3,7 @@ package io.github.blockneko11.simpledbc.impl.action.replace;
 import io.github.blockneko11.simpledbc.api.Database;
 import io.github.blockneko11.simpledbc.api.action.replace.ReplaceAction;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class ValueReplaceAction extends AbstractReplaceAction {
     }
 
     @Override
-    public ReplaceAction value(String key, Object value) {
+    public ReplaceAction value(@Nullable String key, @NotNull Object value) {
         this.values.add(value);
         return this;
     }

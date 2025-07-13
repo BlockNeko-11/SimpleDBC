@@ -16,8 +16,8 @@ public class ColumnInsertAction extends AbstractInsertAction {
     }
 
     @Override
-    public InsertAction value(String key, Object value) {
-        this.values.put(key, value);
+    public InsertAction value(@NotNull String column, @NotNull Object value) {
+        this.values.put(column, value);
         return this;
     }
 

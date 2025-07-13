@@ -3,6 +3,7 @@ package io.github.blockneko11.simpledbc.impl.action.insert;
 import io.github.blockneko11.simpledbc.api.Database;
 import io.github.blockneko11.simpledbc.api.action.insert.InsertAction;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class ValueInsertAction extends AbstractInsertAction {
     }
 
     @Override
-    public InsertAction value(String key, Object value) {
+    public InsertAction value(@Nullable String column, @NotNull Object value) {
         this.values.add(value);
         return this;
     }

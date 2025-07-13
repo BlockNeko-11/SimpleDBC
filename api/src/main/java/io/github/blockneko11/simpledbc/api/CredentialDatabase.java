@@ -3,7 +3,8 @@ package io.github.blockneko11.simpledbc.api;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * 带有凭据（用户名、密码等）数据库接口，继承自 {@link Database}。
+ * 带有凭据（用户名、密码等）数据库接口。
+ * @see Database
  * @author BlockNeko-11
  * @since 1.1.2
  */

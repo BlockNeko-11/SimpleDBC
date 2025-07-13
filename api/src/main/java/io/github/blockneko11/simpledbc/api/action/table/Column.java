@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Set;
 
 /**
- * 数据库表的一列。
+ * 表示数据库表的一列。
  * @author BlockNeko-11
  * @since 1.1.3
  */
