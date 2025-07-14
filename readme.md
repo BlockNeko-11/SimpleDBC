@@ -38,10 +38,10 @@ Written in pure Java.
 ```xml
 <project>
     <dependencies>
-        <!-- module `api` -->
+        <!-- module `core` -->
         <dependency>
             <groupId>com.github.BlockNeko-11.SimpleDBC</groupId>
-            <artifactId>simpledbc-api</artifactId>
+            <artifactId>simpledbc-core</artifactId>
             <version>[LATEST RELEASE]</version>
             <scope>compile</scope>
         </dependency>
@@ -78,8 +78,8 @@ repositories {
 
 ```groovy
 dependencies {
-    // module `api`
-    implementation "com.github.BlockNeko-11.SimpleDBC:simpledbc-api:[LATEST RELEASE]"
+    // module `core`
+    implementation "com.github.BlockNeko-11.SimpleDBC:simpledbc-core:[LATEST RELEASE]"
     
     // module `[YOUR DATABASE NAME]`
     implementation "com.github.BlockNeko-11.SimpleDBC:simpledbc-[YOUR DATABASE NAME]:[LATEST RELEASE]"
